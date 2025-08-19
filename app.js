@@ -1,13 +1,15 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // 🔄 MODIFIÉ
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/api-portfolio')
-    .then(() => console.log('✅ MongoDB connecté'))
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/api-portfolio')
+    .then(() => console.log('✅ MongoDB connecté sur:', process.env.MONGODB_URI || 'mongodb://localhost:27017/api-portfolio'))
     .catch(err => console.error('❌ Erreur MongoDB:', err));
 
 const authRoutes = require('./routes/auth');
