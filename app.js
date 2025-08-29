@@ -2,8 +2,11 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const app = express();
-const port = process.env.PORT || 3000; // 🔄 MODIFIÉ
+const port = process.env.PORT || 3000;
+
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -13,8 +16,10 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/api-portf
     .catch(err => console.error('❌ Erreur MongoDB:', err));
 
 const authRoutes = require('./routes/auth');
+const projectRoutes = require('./routes/projects');
 
 app.use('/auth', authRoutes);
+app.use('/projects', projectRoutes);
 
 app.get('/', (req, res) => {
     res.json({
